@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using A18_Ex02_Lior_Yuval;
 using Facebook;
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
@@ -303,14 +304,14 @@ namespace A18_Ex02_Lior_Yuval
 
         private void createANewGameController()
         {
-            m_GameController = new BeSocialGameController(
-                new GameModel
-                {
-                    PostText = textBoxPost.Text,
-                    SelectedFriend = listBoxFriends.SelectedItem as User,
-                    PictureUrl = null,
-                    LinkUrl = null
-                });
+            m_GameController =  BeSocialGameController.Inctance;
+            //new GameModel
+            //{
+            //    PostText = textBoxPost.Text,
+            //    SelectedFriend = listBoxFriends.SelectedItem as User,
+            //    PictureUrl = null,
+            //    LinkUrl = null
+            //});
             if (!string.IsNullOrEmpty(textBoxURL.Text))
             {
                 if (radioButtonLink.Checked == true)
