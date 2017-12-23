@@ -7,12 +7,12 @@ namespace A18_Ex01_Lior_Yuval
 {
     public sealed class SingeltonGameController
     {
-        private static SomeSingleton5 s_Instance = null;
+        private static SingeltonGameController s_Instance = null;
         private static object s_LockObj = new Object();
 
-        private SomeSingleton5() { }
+        private SingeltonGameController() { }
 
-        public static SomeSingleton5 Instance
+        public static SingeltonGameController Instance
         {
             get
             {
@@ -22,7 +22,7 @@ namespace A18_Ex01_Lior_Yuval
                     {
                         if (s_Instance == null)
                         {
-                            s_Instance = new SomeSingleton5();
+                            s_Instance = new SingeltonGameController();
                         }
                     }
                 }
