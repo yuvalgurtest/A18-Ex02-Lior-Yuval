@@ -11,6 +11,7 @@ using Facebook;
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
 using A18_Ex02_LiorBaraban_YuvalGur_BeSocial_Logic;
+using System.Threading;
 
 namespace A18_Ex02_Lior_Yuval
 {
@@ -23,6 +24,7 @@ namespace A18_Ex02_Lior_Yuval
         private User m_User;
         private List<Control> m_ListOfVisibilityControls;
         private bool m_IsLoggedIn = false;
+        private Thread m_mainThread;
 
         public MainForm()
         {
@@ -33,6 +35,7 @@ namespace A18_Ex02_Lior_Yuval
             m_Publish = postStatus;
             updateMissionControls();
             createListOfVisibleControls();
+            m_mainThread = System.Threading.Thread.CurrentThread;
         }
 
         private void createListOfVisibleControls()
@@ -75,7 +78,7 @@ namespace A18_Ex02_Lior_Yuval
 
                 if (m_IsLoggedIn == false)
                 {
-                    login();
+                    buttonLogin.Invoke(new Action(()=> login()));
                     m_IsLoggedIn = true;
                     isWantToBeVisible = true;
                     updateVisibilityOfControls(isWantToBeVisible);
@@ -204,7 +207,7 @@ namespace A18_Ex02_Lior_Yuval
             listBoxFriends.DisplayMember = "Name";
             foreach (User friend in m_User.Friends)
             {
-                listBoxFriends.Items.Add(friend);
+                listBoxFriends.Invoke(new Action( ()=> listBoxFriends.Items.Add(friend)));
             }
 
             if (m_User.Friends.Count == 0)
@@ -655,6 +658,7 @@ Do you still wish to continue and upload to facebook?";
         {
             try
             {
+
                 if (listBoxAlbums.SelectedIndex < 0)
                 {
                     throw new Exception("You must choose an album first");
@@ -671,23 +675,23 @@ Do you still wish to continue and upload to facebook?";
                 }
 
                 m_ActivitiesController.ActivityCollection = ((listBoxAlbums.SelectedItem as Album).Photos as IEnumerable<PostedItem>).ToList();
-
+                new Thread(GetMostVIralPicture).Start();
                 // activity collection is of type posted item to support other "most liked" facebook types in the future besides posts.
-                PostedItem mostViralItem = m_ActivitiesController.GetViralActivity();
-                if (mostViralItem is Photo)
-                {
-                    pictureBoxViralPic.BackgroundImage = (mostViralItem as Photo).ImageNormal;
-                    if ((mostViralItem as Photo).LikedBy.Count > 0)
-                    {
-                        labelViralLikes.Text = string.Format("Likes: {0}", (mostViralItem as Photo).LikedBy.Count.ToString());
-                    }
-                    else
-                    {
-                        labelViralLikes.Text = "No likes";
-                    }
-                }
+                //PostedItem mostViralItem = m_ActivitiesController.GetViralActivity();
+                //if (mostViralItem is Photo)
+                //{
+                //    pictureBoxViralPic.BackgroundImage = (mostViralItem as Photo).ImageNormal;
+                //    if ((mostViralItem as Photo).LikedBy.Count > 0)
+                //    {
+                //        labelViralLikes.Text = string.Format("Likes: {0}", (mostViralItem as Photo).LikedBy.Count.ToString());
+                //    }
+                //    else
+                //    {
+                //        labelViralLikes.Text = "No likes";
+                //    }
+                //}
 
-                checkIfWantToShareMostViral(mostViralItem);
+                //checkIfWantToShareMostViral(mostViralItem);
             }
             catch (Exception ex)
             {
@@ -695,6 +699,29 @@ Do you still wish to continue and upload to facebook?";
             }
         }
 
+        private void GetMostVIralPicture()
+        {
+            PostedItem mostViralItem = m_ActivitiesController.GetViralActivity();
+            if (mostViralItem is Photo)
+            {
+                pictureBoxViralPic.BackgroundImage = (mostViralItem as Photo).ImageNormal;
+                if ((mostViralItem as Photo).LikedBy.Count > 0)
+                {
+                    labelViralLikes.Invoke(new Action(() => labelViralLikes.Text =
+                        string.Format("Likes: {0}", 
+                        (mostViralItem as Photo).LikedBy.Count.ToString())));
+                }
+                else
+                {
+                    labelViralLikes.Invoke(new Action(() => labelViralLikes.Text = "No likes"));
+                }
+                checkIfWantToShareMostViral(mostViralItem);
+            }
+        }
+
+        private void FindViralPicture()
+        {
+        }
         private void checkIfWantToShareMostViral(PostedItem i_MostViralItem)
         {
             DialogResult messageResult = MessageBox.Show("Do you want to share this on facebook?", string.Empty, MessageBoxButtons.YesNo);
@@ -720,6 +747,11 @@ It got {1} Likes!",
             {
                 MessageBox.Show("Okay, did not post");
             }
+        }
+
+        private void pictureBoxViralPic_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
