@@ -96,7 +96,7 @@
             // buttonLogin
             // 
             this.buttonLogin.Location = new System.Drawing.Point(14, 20);
-            this.buttonLogin.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.buttonLogin.Margin = new System.Windows.Forms.Padding(1);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(81, 30);
             this.buttonLogin.TabIndex = 0;
@@ -107,7 +107,7 @@
             // pictureBoxProfile
             // 
             this.pictureBoxProfile.Location = new System.Drawing.Point(131, 20);
-            this.pictureBoxProfile.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.pictureBoxProfile.Margin = new System.Windows.Forms.Padding(1);
             this.pictureBoxProfile.Name = "pictureBoxProfile";
             this.pictureBoxProfile.Size = new System.Drawing.Size(86, 96);
             this.pictureBoxProfile.TabIndex = 1;
@@ -129,7 +129,7 @@
             this.panelUpLeft.Controls.Add(this.labeUserName);
             this.panelUpLeft.Controls.Add(this.pictureBoxProfile);
             this.panelUpLeft.Location = new System.Drawing.Point(0, 0);
-            this.panelUpLeft.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.panelUpLeft.Margin = new System.Windows.Forms.Padding(1);
             this.panelUpLeft.Name = "panelUpLeft";
             this.panelUpLeft.Size = new System.Drawing.Size(487, 130);
             this.panelUpLeft.TabIndex = 4;
@@ -147,7 +147,7 @@
             // buttonUnselectFriend
             // 
             this.buttonUnselectFriend.Location = new System.Drawing.Point(40, 421);
-            this.buttonUnselectFriend.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.buttonUnselectFriend.Margin = new System.Windows.Forms.Padding(1);
             this.buttonUnselectFriend.Name = "buttonUnselectFriend";
             this.buttonUnselectFriend.Size = new System.Drawing.Size(98, 30);
             this.buttonUnselectFriend.TabIndex = 4;
@@ -296,7 +296,7 @@
             this.radioButtonPostText.AutoSize = true;
             this.radioButtonPostText.Checked = true;
             this.radioButtonPostText.Location = new System.Drawing.Point(40, 143);
-            this.radioButtonPostText.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.radioButtonPostText.Margin = new System.Windows.Forms.Padding(1);
             this.radioButtonPostText.Name = "radioButtonPostText";
             this.radioButtonPostText.Size = new System.Drawing.Size(94, 17);
             this.radioButtonPostText.TabIndex = 17;
@@ -317,7 +317,7 @@
             // 
             this.radioButtonPicture.AutoSize = true;
             this.radioButtonPicture.Location = new System.Drawing.Point(40, 192);
-            this.radioButtonPicture.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.radioButtonPicture.Margin = new System.Windows.Forms.Padding(1);
             this.radioButtonPicture.Name = "radioButtonPicture";
             this.radioButtonPicture.Size = new System.Drawing.Size(124, 17);
             this.radioButtonPicture.TabIndex = 16;
@@ -329,7 +329,7 @@
             // 
             this.radioButtonLink.AutoSize = true;
             this.radioButtonLink.Location = new System.Drawing.Point(40, 168);
-            this.radioButtonLink.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.radioButtonLink.Margin = new System.Windows.Forms.Padding(1);
             this.radioButtonLink.Name = "radioButtonLink";
             this.radioButtonLink.Size = new System.Drawing.Size(153, 17);
             this.radioButtonLink.TabIndex = 15;
@@ -410,6 +410,7 @@
             this.listBoxAlbums.Name = "listBoxAlbums";
             this.listBoxAlbums.Size = new System.Drawing.Size(149, 100);
             this.listBoxAlbums.TabIndex = 19;
+            this.listBoxAlbums.SelectedIndexChanged += new System.EventHandler(this.listBoxAlbums_SelectedIndexChanged);
             // 
             // labelViralLikes
             // 
@@ -423,7 +424,7 @@
             // pictureBoxViralPic
             // 
             this.pictureBoxViralPic.Location = new System.Drawing.Point(186, 102);
-            this.pictureBoxViralPic.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.pictureBoxViralPic.Margin = new System.Windows.Forms.Padding(1);
             this.pictureBoxViralPic.Name = "pictureBoxViralPic";
             this.pictureBoxViralPic.Size = new System.Drawing.Size(125, 119);
             this.pictureBoxViralPic.TabIndex = 4;
@@ -443,7 +444,7 @@
             // buttonFetchViralPhoto
             // 
             this.buttonFetchViralPhoto.Location = new System.Drawing.Point(14, 240);
-            this.buttonFetchViralPhoto.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.buttonFetchViralPhoto.Margin = new System.Windows.Forms.Padding(1);
             this.buttonFetchViralPhoto.Name = "buttonFetchViralPhoto";
             this.buttonFetchViralPhoto.Size = new System.Drawing.Size(147, 30);
             this.buttonFetchViralPhoto.TabIndex = 25;
@@ -475,7 +476,7 @@
             this.Controls.Add(this.panelFeature1);
             this.Controls.Add(this.panelUpLeft);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.Margin = new System.Windows.Forms.Padding(1);
             this.Name = "MainForm";
             this.Text = "MainForm";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).EndInit();

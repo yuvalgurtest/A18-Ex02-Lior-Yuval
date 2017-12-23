@@ -78,13 +78,14 @@ namespace A18_Ex02_Lior_Yuval
 
                 if (m_IsLoggedIn == false)
                 {
-                    buttonLogin.Invoke(new Action(()=> login()));
+                    login();
                     m_IsLoggedIn = true;
                     isWantToBeVisible = true;
                     updateVisibilityOfControls(isWantToBeVisible);
                     buttonLogin.Text = "Log Out";
                     MessageBox.Show("Logged in successfully");
                 }
+                
                 else
                 {
                     bool isGameStillRunning = false;
@@ -157,7 +158,7 @@ namespace A18_Ex02_Lior_Yuval
 
         private void login()
         {
-            m_Result = FacebookWrapper.FacebookService.Login(
+            m_Result = FacebookService.Login(
                 "495677157474019",
                 "user_education_history",
                 "user_birthday",
@@ -199,15 +200,15 @@ namespace A18_Ex02_Lior_Yuval
         {
             pictureBoxProfile.Image = m_User.ImageNormal;
             labeUserName.Text = string.Format("{0},{1}", m_User.FirstName, m_User.LastName);
-            updateLists();
+            new Thread(updateLists).Start();
         }
 
         private void updateLists()
         {
-            listBoxFriends.DisplayMember = "Name";
+            listBoxFriends.Invoke(new Action(() => listBoxFriends.DisplayMember = "Name"));
             foreach (User friend in m_User.Friends)
             {
-                listBoxFriends.Invoke(new Action( ()=> listBoxFriends.Items.Add(friend)));
+                listBoxFriends.Invoke(new Action(()=> listBoxFriends.Items.Add(friend)));
             }
 
             if (m_User.Friends.Count == 0)
@@ -215,10 +216,10 @@ namespace A18_Ex02_Lior_Yuval
                 MessageBox.Show("No Friends to display");
             }
 
-            listBoxAlbums.DisplayMember = "Name";
+            listBoxAlbums.Invoke(new Action(() => listBoxAlbums.DisplayMember = "Name"));
             foreach (Album album in m_User.Albums)
             {
-                listBoxAlbums.Items.Add(album);
+                listBoxAlbums.Invoke(new Action(() => listBoxAlbums.Items.Add(album)));
             }
 
             if (m_User.Albums.Count == 0)
@@ -718,10 +719,6 @@ Do you still wish to continue and upload to facebook?";
                 checkIfWantToShareMostViral(mostViralItem);
             }
         }
-
-        private void FindViralPicture()
-        {
-        }
         private void checkIfWantToShareMostViral(PostedItem i_MostViralItem)
         {
             DialogResult messageResult = MessageBox.Show("Do you want to share this on facebook?", string.Empty, MessageBoxButtons.YesNo);
@@ -752,6 +749,11 @@ It got {1} Likes!",
         private void pictureBoxViralPic_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void listBoxAlbums_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
