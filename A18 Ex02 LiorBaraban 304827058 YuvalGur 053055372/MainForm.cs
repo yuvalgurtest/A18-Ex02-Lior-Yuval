@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using Facebook;
 using FacebookWrapper;
@@ -22,6 +23,7 @@ namespace A18_Ex02_Lior_Yuval
         private User m_User;
         private List<Control> m_ListOfVisibilityControls;
         private bool m_IsLoggedIn = false;
+        private Thread m_MainThread;
 
         public MainForm()
         {
@@ -32,6 +34,7 @@ namespace A18_Ex02_Lior_Yuval
             m_Publish = postStatus;
             updateMissionControls();
             createListOfVisibleControls();
+            m_MainThread = Thread.CurrentThread;
         }
 
         private void createListOfVisibleControls()
@@ -70,6 +73,7 @@ namespace A18_Ex02_Lior_Yuval
         {
             try
             {
+                //new Thread(Login).Start();
                 bool isWantToBeVisible = false;
 
                 if (m_IsLoggedIn == false)
@@ -79,7 +83,7 @@ namespace A18_Ex02_Lior_Yuval
                     isWantToBeVisible = true;
                     updateVisibilityOfControls(isWantToBeVisible);
                     buttonLogin.Text = "Log Out";
-                    MessageBox.Show("Logged in successfully");
+                    // MessageBox.Show("Logged in successfully");
                 }
                 else
                 {
@@ -108,6 +112,11 @@ namespace A18_Ex02_Lior_Yuval
             {
                 MessageBox.Show(ex.Message, "Oops! something went wrong.");
             }
+        }
+
+        private void Login()
+        {
+            
         }
 
         private bool isWantToLeaveGame()
@@ -200,38 +209,40 @@ namespace A18_Ex02_Lior_Yuval
 
         private void updateLists()
         {
-            listBoxFriends.DisplayMember = "Name";
-            foreach (User friend in m_User.Friends)
-            {
-                listBoxFriends.Items.Add(friend);
-            }
+            friendListBindingSource.DataSource = m_User.Friends;
+            albumsBindingSource1.DataSource = m_User.Albums;
+            //listBoxFriends.DisplayMember = "Name";
+            //foreach (User friend in m_User.Friends)
+            //{
+            //    listBoxFriends.Items.Add(friend);
+            //}
 
-            if (m_User.Friends.Count == 0)
-            {
-                MessageBox.Show("No Friends to display");
-            }
+            //if (m_User.Friends.Count == 0)
+            //{
+            //    MessageBox.Show("No Friends to display");
+            //}
 
-            listBoxAlbums.DisplayMember = "Name";
-            foreach (Album album in m_User.Albums)
-            {
-                listBoxAlbums.Items.Add(album);
-            }
+            //listBoxAlbums.DisplayMember = "Name";
+            //foreach (Album album in m_User.Albums)
+            //{
+            //    listBoxAlbums.Items.Add(album);
+            //}
 
-            if (m_User.Albums.Count == 0)
-            {
-                MessageBox.Show("No Albums to display");
-            }
+            //if (m_User.Albums.Count == 0)
+            //{
+            //    MessageBox.Show("No Albums to display");
+            //}
         }
 
-        private void listBoxFriends_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (m_GameController != null)
-            {
-                m_GameController.Model.SelectedFriend = (sender as ListBox).SelectedItem as User;
-            }
+        //private void listBoxFriends_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (m_GameController != null)
+        //    {
+        //        m_GameController.Model.SelectedFriend = (sender as ListBox).SelectedItem as User;
+        //    }
 
-            displaySelectedFriend();
-        }
+        //    displaySelectedFriend();
+        //}
 
         private void buttonUnselectFriend_Click(object sender, EventArgs e)
         {
@@ -243,6 +254,7 @@ namespace A18_Ex02_Lior_Yuval
                 }
 
                 listBoxFriends.ClearSelected();
+                
                 if (m_GameController != null)
                 {
                     m_GameController.Model.SelectedFriend = null;
@@ -424,7 +436,7 @@ m_GameController.MaxScore - m_GameController.PlayerScore);
             if (messageResult == DialogResult.Yes)
             {
                 string post = string.Format(@"I Finished BeMoreSocial and scored {0} Points!", m_GameController.PlayerScore);
-                m_User.PostStatus(post);
+                new Thread(()=>m_User.PostStatus(post)).Start();
                 MessageBox.Show(@"Your BeMoreSocial score was shared! 
 See you next time!");
             }
@@ -475,6 +487,7 @@ Press 'Start Game' whenever You're ready to play. Good Luck!";
             textBoxURL.Text = string.Empty;
             buttonSelectPicture.Enabled = false;
             labelPostText.Text = "Post Text:";
+           // m_Publish = new Thread(postStatus).Start;
             m_Publish = postStatus;
         }
 
@@ -486,6 +499,7 @@ Press 'Start Game' whenever You're ready to play. Good Luck!";
             buttonSelectPicture.Enabled = false;
             buttonSelectPicture.Enabled = false;
             labelPostText.Text = "Additional Text:";
+            //m_Publish = new Thread(postStatus).Start;
             m_Publish = postStatus;
         }
 
@@ -565,7 +579,8 @@ Press 'Start Game' whenever You're ready to play. Good Luck!";
                     throw new Exception("Not enough parameters to publish any kind of post!");
                 }
 
-                m_User.PostStatus(statusText.ToString(), null, null, taggedFriendId, linkURL);
+                new Thread(()=>m_User.PostStatus(statusText.ToString(), 
+                    null, null, taggedFriendId, linkURL)).Start();
                 MessageBox.Show("Posted a status to facebook");
             }
             catch (Exception ex)
@@ -580,7 +595,7 @@ Press 'Start Game' whenever You're ready to play. Good Luck!";
             string photoDescription = m_GameController.Model.PostText;
             try
             {
-                m_User.PostPhoto(photoURL, photoDescription, null);
+                new Thread(()=> m_User.PostPhoto(photoURL, photoDescription, null)).Start();
                 MessageBox.Show("Posted a photo to facebook");
             }
             catch (Exception ex)
@@ -670,28 +685,34 @@ Do you still wish to continue and upload to facebook?";
                 }
 
                 m_ActivitiesController.ActivityCollection = ((listBoxAlbums.SelectedItem as Album).Photos as IEnumerable<PostedItem>).ToList();
-
+                new Thread(GetMostViralPicture).Start();
                 // activity collection is of type posted item to support other "most liked" facebook types in the future besides posts.
-                PostedItem mostViralItem = m_ActivitiesController.GetViralActivity();
-                if (mostViralItem is Photo)
-                {
-                    pictureBoxViralPic.BackgroundImage = (mostViralItem as Photo).ImageNormal;
-                    if ((mostViralItem as Photo).LikedBy.Count > 0)
-                    {
-                        labelViralLikes.Text = string.Format("Likes: {0}", (mostViralItem as Photo).LikedBy.Count.ToString());
-                    }
-                    else
-                    {
-                        labelViralLikes.Text = "No likes";
-                    }
-                }
-
-                checkIfWantToShareMostViral(mostViralItem);
+                
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void GetMostViralPicture()
+        {
+            PostedItem mostViralItem = m_ActivitiesController.GetViralActivity();
+            if (mostViralItem is Photo)
+            {
+                pictureBoxViralPic.BackgroundImage = (mostViralItem as Photo).ImageNormal;
+                if ((mostViralItem as Photo).LikedBy.Count > 0)
+                {
+                    labelViralLikes.Invoke(new Action(() => labelViralLikes.Text = string.Format("Likes: {0}",
+                        (mostViralItem as Photo).LikedBy.Count.ToString())));
+                }
+                else
+                {
+                    labelViralLikes.Invoke(new Action(() => labelViralLikes.Text = "No likes"));
+                }
+            }
+
+            checkIfWantToShareMostViral(mostViralItem);
         }
 
         private void checkIfWantToShareMostViral(PostedItem i_MostViralItem)
@@ -720,5 +741,6 @@ It got {1} Likes!",
                 MessageBox.Show("Okay, did not post");
             }
         }
+        
     }
 }
