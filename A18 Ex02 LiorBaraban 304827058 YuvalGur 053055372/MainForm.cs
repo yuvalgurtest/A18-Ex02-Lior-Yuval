@@ -301,6 +301,7 @@ namespace A18_Ex02_Lior_Yuval
                 }
 
                 startGame();
+                buttonStartGame.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -317,6 +318,8 @@ namespace A18_Ex02_Lior_Yuval
         private void createANewGameController()
         {
             m_GameController =  BeSocialGameController.Inctance;
+            m_GameController.Model.PostText = textBoxPost.Text;
+            m_GameController.Model.SelectedFriend = listBoxFriends.SelectedItem as User;
             //new GameModel
             //{
             //    PostText = textBoxPost.Text,
@@ -424,6 +427,7 @@ m_GameController.MaxScore - m_GameController.PlayerScore);
             if (i_IsVictory)
             {
                 shareScore();
+                buttonStartGame.Enabled = true;
             }
 
             m_GameController = null;
