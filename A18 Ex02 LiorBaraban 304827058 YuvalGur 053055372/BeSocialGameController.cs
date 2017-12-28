@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FacebookWrapper.ObjectModel;
 
 namespace A18_Ex02_LiorBaraban_YuvalGur_BeSocial_Logic
 {
-    public class BeSocialGameController
+    public sealed class BeSocialGameController
     {
         private LinkedList<ISocialMission> m_MissionsLinkedList = new LinkedList<ISocialMission>();
         private LinkedListNode<ISocialMission> m_CurrentMissionNode;
+        private static BeSocialGameController s_ControllerInstance = null;
+        private static object s_SingeltonLock = new Object();
 
         public LinkedListNode<ISocialMission> CurrentMissionNode
         {
@@ -26,7 +29,7 @@ namespace A18_Ex02_LiorBaraban_YuvalGur_BeSocial_Logic
 
         public int MaxScore { get; }
 
-        public BeSocialGameController(GameModel i_Model)
+        private BeSocialGameController(GameModel i_Model)
         {
             PlayerScore = 0;
             MaxScore = 10;
@@ -46,7 +49,7 @@ namespace A18_Ex02_LiorBaraban_YuvalGur_BeSocial_Logic
             tempMissionList.Add(new MissionWriteALongPost(Model));
             tempMissionList.Add(new MissionWriteAPost(Model));
 
-           randomizeMissionsOrder(tempMissionList);
+            randomizeMissionsOrder(tempMissionList);
         }
 
         private void randomizeMissionsOrder(List<ISocialMission> i_TempList)
@@ -95,7 +98,7 @@ namespace A18_Ex02_LiorBaraban_YuvalGur_BeSocial_Logic
         {
             PlayerScore = 0;
             List<ISocialMission> tempMissionList = new List<ISocialMission>();
-            foreach(ISocialMission mission in m_MissionsLinkedList)
+            foreach (ISocialMission mission in m_MissionsLinkedList)
             {
                 tempMissionList.Add(mission);
             }
@@ -107,6 +110,37 @@ namespace A18_Ex02_LiorBaraban_YuvalGur_BeSocial_Logic
         public bool IsReachedMaxPoints()
         {
             return PlayerScore >= MaxScore;
+        }
+
+        //Please Check my imploementation.
+        //I have Nulled thePostText and selectedfriend.
+        //Please Comment 
+        public static BeSocialGameController Inctance
+        {
+            get
+            {
+                if (s_ControllerInstance == null)
+                {
+                    lock (s_SingeltonLock)
+                    {
+                        if (s_ControllerInstance == null)
+                        {
+                            s_ControllerInstance =
+                                new BeSocialGameController(
+                                    new GameModel
+                                    {
+                                    PostText = null,//textBoxPost.Text,
+                                    SelectedFriend = null,//listBoxFriends.SelectedItem as User,
+                                    PictureUrl = null,
+                                    LinkUrl = null
+                                    });
+                                
+                        }
+                    }
+                }
+
+                return s_ControllerInstance;
+            }
         }
     }
 }
