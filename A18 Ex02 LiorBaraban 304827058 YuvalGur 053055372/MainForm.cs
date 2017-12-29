@@ -84,7 +84,8 @@ namespace A18_Ex02_Lior_Yuval
                     isWantToBeVisible = true;
                     updateVisibilityOfControls(isWantToBeVisible);
                     buttonLogin.Text = "Log Out";
-                    // MessageBox.Show("Logged in successfully");
+                    SystemMessageBox.Text = "Logged in successfully";
+                //    MessageBox.Show("Logged in successfully");
                 }
                 else
                 {
@@ -101,7 +102,8 @@ namespace A18_Ex02_Lior_Yuval
                         updateVisibilityOfControls(isWantToBeVisible);
                         clearControls();
                         buttonLogin.Text = "Log In";
-                        MessageBox.Show("Logged out successfully");
+                        SystemMessageBox.Text = "Logged out successfully";
+                        //MessageBox.Show("Logged out successfully");
                     }
                     else
                     {
@@ -134,11 +136,13 @@ namespace A18_Ex02_Lior_Yuval
 
         private void clearControls()
         {
-            listBoxFriends.Items.Clear();
+            friendListBindingSource.Clear();
+            //listBoxFriends.Items.Clear();
             labelCounter.Text = null;
             textBoxPost.Text = null;
             textBoxURL.Text = null;
-            listBoxAlbums.Items.Clear();
+            albumsBindingSource1.Clear();
+            //listBoxAlbums.Items.Clear();
             pictureBoxViralPic.BackgroundImage = null;
             labelViralLikes.Text = null;
         }
@@ -734,7 +738,8 @@ It got {1} Likes!",
 (i_MostViralItem as Photo).LikedBy.Count.ToString());
                     string linkUrl = (i_MostViralItem as Photo).Link;
                     m_User.PostStatus(msg, null, null, null, linkUrl);
-                    MessageBox.Show("Posted to facebook!");
+                    SystemMessageBox.Text = "Posted to facebook!";
+                    //MessageBox.Show("Posted to facebook!");
                 }
                 catch (Exception ex)
                 {
@@ -743,7 +748,8 @@ It got {1} Likes!",
             }
             else
             {
-                MessageBox.Show("Okay, did not post");
+                SystemMessageBox.Text = "Okay, did not post";
+                //MessageBox.Show("Okay, did not post");
             }
         }
         
