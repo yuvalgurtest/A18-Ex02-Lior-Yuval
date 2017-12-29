@@ -67,8 +67,6 @@
             this.labelFeature2 = new System.Windows.Forms.Label();
             this.buttonFetchViralPhoto = new System.Windows.Forms.Button();
             this.albumsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.SystemMessageBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).BeginInit();
             this.panelUpLeft.SuspendLayout();
@@ -79,7 +77,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.albumsBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxViralPic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumsBindingSource)).BeginInit();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelCharCount
@@ -457,34 +454,13 @@
             this.buttonFetchViralPhoto.UseVisualStyleBackColor = true;
             this.buttonFetchViralPhoto.Click += new System.EventHandler(this.buttonFetchViralActivity_Click);
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.SystemMessageBox);
-            this.panel1.Location = new System.Drawing.Point(493, 685);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(489, 172);
-            this.panel1.TabIndex = 12;
-            // 
-            // SystemMessageBox
-            // 
-            this.SystemMessageBox.Cursor = System.Windows.Forms.Cursors.No;
-            this.SystemMessageBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.SystemMessageBox.Location = new System.Drawing.Point(36, 20);
-            this.SystemMessageBox.Multiline = true;
-            this.SystemMessageBox.Name = "SystemMessageBox";
-            this.SystemMessageBox.ReadOnly = true;
-            this.SystemMessageBox.Size = new System.Drawing.Size(367, 120);
-            this.SystemMessageBox.TabIndex = 0;
-            this.SystemMessageBox.Text = "System Messages";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1065, 443);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(1082, 460);
             this.Controls.Add(this.panelFeature2);
             this.Controls.Add(this.panelFeature1);
             this.Controls.Add(this.panelUpLeft);
@@ -505,8 +481,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.albumsBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxViralPic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumsBindingSource)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -550,7 +524,5 @@
         private System.Windows.Forms.BindingSource friendListBindingSource;
         private System.Windows.Forms.BindingSource albumsBindingSource1;
         private System.Windows.Forms.BindingSource userBindingSource;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox SystemMessageBox;
     }
 }

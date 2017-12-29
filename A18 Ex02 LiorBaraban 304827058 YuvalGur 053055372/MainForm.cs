@@ -74,18 +74,18 @@ namespace A18_Ex02_Lior_Yuval
         {
             try
             {
-                //new Thread(Login).Start();
+                
                 bool isWantToBeVisible = false;
 
                 if (m_IsLoggedIn == false)
                 {
-                    login();
+                    //login();
+                    new Thread(login).Start();
                     m_IsLoggedIn = true;
                     isWantToBeVisible = true;
                     updateVisibilityOfControls(isWantToBeVisible);
                     buttonLogin.Text = "Log Out";
-                    SystemMessageBox.Text = "Logged in successfully";
-                //    MessageBox.Show("Logged in successfully");
+                  //  MessageBox.Show("Logged in successfully");
                 }
                 else
                 {
@@ -102,8 +102,7 @@ namespace A18_Ex02_Lior_Yuval
                         updateVisibilityOfControls(isWantToBeVisible);
                         clearControls();
                         buttonLogin.Text = "Log In";
-                        SystemMessageBox.Text = "Logged out successfully";
-                        //MessageBox.Show("Logged out successfully");
+                        MessageBox.Show("Logged out successfully");
                     }
                     else
                     {
@@ -167,7 +166,7 @@ namespace A18_Ex02_Lior_Yuval
 
         private void login()
         {
-            m_Result = FacebookWrapper.FacebookService.Login(
+            buttonLogin.Invoke(new Action(()=> m_Result = FacebookWrapper.FacebookService.Login(
                 "495677157474019",
                 "user_education_history",
                 "user_birthday",
@@ -199,7 +198,7 @@ namespace A18_Ex02_Lior_Yuval
                 "manage_pages",
                 "publish_pages",
                 "publish_actions",
-                "rsvp_event");
+                "rsvp_event")));
 
             m_User = m_Result.LoggedInUser;
             updateLoginProfile();
@@ -208,14 +207,15 @@ namespace A18_Ex02_Lior_Yuval
         private void updateLoginProfile()
         {
             pictureBoxProfile.Image = m_User.ImageNormal;
-            labeUserName.Text = string.Format("{0},{1}", m_User.FirstName, m_User.LastName);
+            labeUserName.Invoke(new Action(()=>labeUserName.Text =
+            string.Format("{0},{1}", m_User.FirstName, m_User.LastName)));
             updateLists();
         }
 
         private void updateLists()
         {
-            friendListBindingSource.DataSource = m_User.Friends;
-            albumsBindingSource1.DataSource = m_User.Albums;
+            listBoxFriends.Invoke(new Action(()=>friendListBindingSource.DataSource = m_User.Friends));
+            listBoxAlbums.Invoke(new Action(()=>albumsBindingSource1.DataSource = m_User.Albums));
             //listBoxFriends.DisplayMember = "Name";
             //foreach (User friend in m_User.Friends)
             //{
@@ -738,8 +738,7 @@ It got {1} Likes!",
 (i_MostViralItem as Photo).LikedBy.Count.ToString());
                     string linkUrl = (i_MostViralItem as Photo).Link;
                     m_User.PostStatus(msg, null, null, null, linkUrl);
-                    SystemMessageBox.Text = "Posted to facebook!";
-                    //MessageBox.Show("Posted to facebook!");
+                    MessageBox.Show("Posted to facebook!");
                 }
                 catch (Exception ex)
                 {
@@ -748,8 +747,7 @@ It got {1} Likes!",
             }
             else
             {
-                SystemMessageBox.Text = "Okay, did not post";
-                //MessageBox.Show("Okay, did not post");
+                MessageBox.Show("Okay, did not post");
             }
         }
         
