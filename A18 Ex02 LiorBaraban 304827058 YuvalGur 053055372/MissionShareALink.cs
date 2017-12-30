@@ -32,7 +32,8 @@ ScoreValue);
             {
                 try
                 {
-                    isFulfilled = ConnectionTester.TestConnection(MissionModel.LinkUrl);
+                    ITester connectionTester = new ConnectionTester(MissionModel.LinkUrl);
+                    isFulfilled = connectionTester.Test();
                 }
                 catch (Exception ex)
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FacebookWrapper.ObjectModel;
+using A18_Ex01_Lior_Yuval;
 
 namespace A18_Ex02_LiorBaraban_YuvalGur_BeSocial_Logic
 {
@@ -34,43 +35,46 @@ namespace A18_Ex02_LiorBaraban_YuvalGur_BeSocial_Logic
             PlayerScore = 0;
             MaxScore = 10;
             Model = i_Model;
-            initializeAllMissions();
+            m_MissionsLinkedList = MissionFactory.CreateMissionList(i_Model);
+            //initializeAllMissions();  $Lior- moved to MissionFactory (factory method)
             m_CurrentMissionNode = m_MissionsLinkedList.First;
         }
 
-        private void initializeAllMissions()
-        {
-            List<ISocialMission> tempMissionList = new List<ISocialMission>();
+        // $Lior - moved to MissionFactory (factory method)
+        //private void initializeAllMissions()
+        //{
+        //    List<ISocialMission> tempMissionList = new List<ISocialMission>();
 
-            tempMissionList.Add(new MissionShareALink(Model));
-            tempMissionList.Add(new MissionTagAFriendAndShareALink(Model));
-            tempMissionList.Add(new MissionTagFriendAndPost(Model));
-            tempMissionList.Add(new MissionUploadPhoto(Model));
-            tempMissionList.Add(new MissionWriteALongPost(Model));
-            tempMissionList.Add(new MissionWriteAPost(Model));
+        //    tempMissionList.Add(new MissionShareALink(Model));
+        //    tempMissionList.Add(new MissionTagAFriendAndShareALink(Model));
+        //    tempMissionList.Add(new MissionTagFriendAndPost(Model));
+        //    tempMissionList.Add(new MissionUploadPhoto(Model));
+        //    tempMissionList.Add(new MissionWriteALongPost(Model));
+        //    tempMissionList.Add(new MissionWriteAPost(Model));
 
-            randomizeMissionsOrder(tempMissionList);
-        }
+        //    randomizeMissionsOrder(tempMissionList);
+        //}
 
-        private void randomizeMissionsOrder(List<ISocialMission> i_TempList)
-        {
-            Random rand = new Random();
-            ISocialMission mission;
-            int n = i_TempList.Count;
-            while (n > 1)
-            {
-                n--;
-                int i = rand.Next(n + 1);
-                mission = i_TempList[i];
-                i_TempList[i] = i_TempList[n];
-                i_TempList[n] = mission;
-            }
+        // $Lior - moved to MissionFactory (factory method)
+        //private void randomizeMissionsOrder(List<ISocialMission> i_TempList)
+        //{
+        //    Random rand = new Random();
+        //    ISocialMission mission;
+        //    int n = i_TempList.Count;
+        //    while (n > 1)
+        //    {
+        //        n--;
+        //        int i = rand.Next(n + 1);
+        //        mission = i_TempList[i];
+        //        i_TempList[i] = i_TempList[n];
+        //        i_TempList[n] = mission;
+        //    }
 
-            foreach (ISocialMission tempMission in i_TempList)
-            {
-                m_MissionsLinkedList.AddFirst(tempMission);
-            }
-        }
+        //    foreach (ISocialMission tempMission in i_TempList)
+        //    {
+        //        m_MissionsLinkedList.AddFirst(tempMission);
+        //    }
+        //}
 
         public bool IsCurrentMissionFullfilled()
         {
@@ -97,14 +101,20 @@ namespace A18_Ex02_LiorBaraban_YuvalGur_BeSocial_Logic
         public void ResetGame()
         {
             PlayerScore = 0;
-            List<ISocialMission> tempMissionList = new List<ISocialMission>();
-            foreach (ISocialMission mission in m_MissionsLinkedList)
-            {
-                tempMissionList.Add(mission);
-            }
-
-            randomizeMissionsOrder(tempMissionList);
+            
+            // $lior - Added the following (factory method)
+            m_MissionsLinkedList = MissionFactory.CreateMissionList(Model);
             m_CurrentMissionNode = m_MissionsLinkedList.First;
+
+
+            // $lior - Removed The following (factory method)
+            //List<ISocialMission> tempMissionList = new List<ISocialMission>();
+            //foreach (ISocialMission mission in m_MissionsLinkedList)
+            //{
+            //    tempMissionList.Add(mission);
+            //}
+            //randomizeMissionsOrder(tempMissionList);
+            //m_CurrentMissionNode = m_MissionsLinkedList.First;
         }
 
         public bool IsReachedMaxPoints()
@@ -115,7 +125,7 @@ namespace A18_Ex02_LiorBaraban_YuvalGur_BeSocial_Logic
         //Please Check my imploementation.
         //I have Nulled thePostText and selectedfriend.
         //Please Comment 
-        public static BeSocialGameController Inctance
+        public static BeSocialGameController Instance
         {
             get
             {

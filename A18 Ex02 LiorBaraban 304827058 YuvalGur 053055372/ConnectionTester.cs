@@ -7,12 +7,18 @@ using System.Text;
 
 namespace A18_Ex02_LiorBaraban_YuvalGur_BeSocial_Logic
 {
-    public static class ConnectionTester
+    public class ConnectionTester : ITester
     {
-        public static bool TestConnection(string i_LinkUrl)
+        string m_UrlLink;
+
+        public ConnectionTester(string i_UrlLink)
+        {
+            m_UrlLink = i_UrlLink;
+        }
+        public bool Test()
         {
             bool isValid = false;
-            Uri uri = new Uri(i_LinkUrl);
+            Uri uri = new Uri(m_UrlLink);
             Ping ping = new Ping();
             PingReply pingReply = ping.Send(uri.Host);
             if (pingReply.Status == IPStatus.Success)
@@ -26,5 +32,6 @@ namespace A18_Ex02_LiorBaraban_YuvalGur_BeSocial_Logic
 
             return isValid;
         }
+
     }
 }
